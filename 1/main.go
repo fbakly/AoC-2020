@@ -1,11 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
+	"io/ioutil"
 	"strconv"
+	"strings"
 )
 
 func part1(numbers []int) int {
@@ -32,28 +31,26 @@ func part2(numbers []int) int {
 	return -1
 }
 
-func readFile(filePath string) ([]int, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+func getInput(filePath string) []int {
+	data, err := ioutil.ReadFile(filePath)
 
-	var lines []int
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		num, _ := strconv.Atoi(scanner.Text())
-		lines = append(lines, num)
-	}
-	return lines, scanner.Err()
-}
-
-func main() {
-	data, err := readFile("input")
 	if err != nil {
 		panic(err)
 	}
+
+	lines := strings.Fields(string(data))
+	var nums []int
+
+	for _, val := range lines {
+		num, _ := strconv.Atoi(val)
+		nums = append(nums, num)
+	}
+	return nums
+}
+
+func main() {
+	data := getInput("input")
+
 	fmt.Printf("Part 1 solution: %d\n", part1(data))
 	fmt.Printf("Part 2 solution: %d\n", part2(data))
 }
