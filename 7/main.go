@@ -31,7 +31,7 @@ func findOuterBags(lines []string, bag string, validBags map[string]bool) int {
 	return numBags
 }
 
-func findInnerBags(lines []string, color string) int {
+func findInnerBags(lines []string, color string, totalBagContent map[string]int) int {
 	numBags := 0
 	bagsInColor := make(map[string]int)
 
@@ -47,7 +47,13 @@ func findInnerBags(lines []string, color string) int {
 	}
 
 	for key, val := range bagsInColor {
-		numBags += (val + (val * findInnerBags(lines, key)))
+		if _, ok := totalBagContent[key]; !ok {
+			totalInBag := findInnerBags(lines, key, totalBagContent)
+			totalBagContent[key] = totalInBag
+			numBags += (val + (val * totalInBag))
+		} else {
+			numBags += (val + (val * totalBagContent[key]))
+		}
 	}
 	return numBags
 }
@@ -58,7 +64,8 @@ func part1(lines []string) int {
 }
 
 func part2(lines []string) int {
-	return findInnerBags(lines, "shiny gold")
+	totalBagContent := make(map[string]int) // Added for memoization
+	return findInnerBags(lines, "shiny gold", totalBagContent)
 }
 
 func main() {
