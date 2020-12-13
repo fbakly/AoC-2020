@@ -61,16 +61,12 @@ func moveWaypoint(instruction byte, value int, waypointPos, shipPos []int) {
 	case 'L':
 		rotations := value / 90
 		for i := 0; i < rotations; i++ {
-			temp := -waypointPos[1]
-			waypointPos[1] = waypointPos[0]
-			waypointPos[0] = temp
+			waypointPos[0], waypointPos[1] = -waypointPos[1], waypointPos[0]
 		}
 	case 'R':
 		rotations := value / 90
 		for i := 0; i < rotations; i++ {
-			temp := -waypointPos[0]
-			waypointPos[0] = waypointPos[1]
-			waypointPos[1] = temp
+			waypointPos[0], waypointPos[1] = waypointPos[1], -waypointPos[0]
 		}
 	default:
 		fmt.Println(instruction)
