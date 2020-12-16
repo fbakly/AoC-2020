@@ -15,18 +15,16 @@ func solve(nums []int, target int) int {
 			m[nums[i]] = []int{i}
 			lastNum = nums[i]
 		} else {
-			if val, ok := m[lastNum]; ok {
-				if len(val) > 1 {
-					lastNum = m[lastNum][len(m[lastNum])-1] - m[lastNum][len(m[lastNum])-2]
-					if _, ok := m[lastNum]; ok {
-						m[lastNum] = append(m[lastNum], i)
-					} else {
-						m[lastNum] = []int{i}
-					}
-				} else {
-					lastNum = 0
+			if len(m[lastNum]) > 1 {
+				lastNum = m[lastNum][len(m[lastNum])-1] - m[lastNum][len(m[lastNum])-2]
+				if _, ok := m[lastNum]; ok {
 					m[lastNum] = append(m[lastNum], i)
+				} else {
+					m[lastNum] = []int{i}
 				}
+			} else {
+				lastNum = 0
+				m[lastNum] = append(m[lastNum], i)
 			}
 		}
 	}
